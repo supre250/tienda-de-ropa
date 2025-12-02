@@ -1,0 +1,113 @@
+<div class="cart-page">
+  <h1>Carrito de compras</h1>
+
+  <div *ngIf="loading" class="info-text">Cargando carrito...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && cart">
+    <div *ngIf="cart.items.length === 0" class="info-text">
+      Tu carrito está vacío.
+      <a routerLink="/products">Ver productos</a>
+    </div>
+
+    <div *ngIf="cart.items.length > 0" class="cart-layout">
+      <!-- Lista de items -->
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cart.items">
+          <div class="item-main">
+            <img [src]="getItemProductImage(item)" [alt]="getItemProductName(item)" />
+
+            <div class="item-info">
+              <h3>{{ getItemProductName(item) }}</h3>
+              <p class="price-unit">
+                Precio unidad:
+                {{ item.price | currency : 'USD' : 'symbol' : '1.2-2' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="item-actions">
+            <div class="quantity-control">
+              <button
+                type="button"
+                (click)="changeQuantity(item, -1)"
+                [disabled]="updating[getItemProductId(item)] || item.quantity <= 1"
+              >
+                -
+              </button>
+
+              <input
+                type="number"
+                [(ngModel)]="item.quantity"
+                (blur)="onQuantityBlur(item)"
+                min="1"
+              />
+
+              <button
+                type="button"
+                (click)="changeQuantity(item, +1)"
+                [disabled]="updating[getItemProductId(item)]"
+              >
+                +
+              </button>
+            </div>
+
+            <div class="item-subtotal">
+              {{ getItemSubtotal(item) | currency : 'USD' : 'symbol' : '1.2-2' }}
+            </div>
+
+            <button
+              type="button"
+              class="btn-remove"
+              (click)="removeItem(item)"
+              [disabled]="updating[getItemProductId(item)]"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen -->
+      <div class="cart-summary">
+        <h2>Resumen</h2>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>
+            {{ cartTotal | currency : 'USD' : 'symbol' : '1.2-2' }}
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span>Envío</span>
+          <span>Por calcular</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>
+            {{ cartTotal | currency : 'USD' : 'symbol' : '1.2-2' }}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="goToCheckout()"
+          [disabled]="cart.items.length === 0"
+        >
+          Proceder al pago
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="clearCart()"
+          [disabled]="cart.items.length === 0"
+        >
+          Vaciar carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

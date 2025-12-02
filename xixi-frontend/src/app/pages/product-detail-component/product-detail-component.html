@@ -1,0 +1,40 @@
+<div class="product-detail-page">
+  <div *ngIf="loading" class="info-text">Cargando producto...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && product" class="product-detail">
+    <div class="image-wrapper">
+      <img [src]="getProductImage(product)" [alt]="product.name" />
+    </div>
+
+    <div class="info-wrapper">
+      <h1>{{ product.name }}</h1>
+      <p class="price">
+        {{ product.price | currency : 'USD' : 'symbol' : '1.2-2' }}
+      </p>
+      <p class="description">
+        {{ product.description || 'Sin descripción disponible' }}
+      </p>
+
+      <div class="stock">
+        <span *ngIf="product.stock > 0">Stock: {{ product.stock }}</span>
+        <span *ngIf="product.stock <= 0">Agotado</span>
+      </div>
+
+      <!-- Luego aquí conectarás con el carrito -->
+      <button class="btn-primary" disabled>Agregar al carrito (pendiente lógica)</button>
+
+      <button
+        class="btn-primary"
+        type="button"
+        (click)="addToCart()"
+        [disabled]="addingToCart || (product && product.stock <= 0)"
+      >
+        <ng-container *ngIf="!addingToCart">Agregar al carrito</ng-container>
+        <ng-container *ngIf="addingToCart">Agregando...</ng-container>
+      </button>
+
+      <a routerLink="/products" class="link-back">Volver a productos</a>
+    </div>
+  </div>
+</div>

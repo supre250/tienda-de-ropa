@@ -1,0 +1,84 @@
+<div class="dashboard-page">
+  <div class="dashboard-header">
+    <div>
+      <h1>Panel de administración</h1>
+      <p>Resumen general de la tienda XI-XI.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando estadísticas...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <!-- Tarjetas de resumen -->
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-label">Productos</div>
+        <div class="card-value">{{ totalProducts }}</div>
+        <a routerLink="/admin/products" class="card-link">Ver productos</a>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Categorías</div>
+        <div class="card-value">{{ totalCategories }}</div>
+        <a routerLink="/admin/categories" class="card-link">Ver categorías</a>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Órdenes</div>
+        <div class="card-value">{{ totalOrders }}</div>
+        <a routerLink="/admin/orders" class="card-link">Ver órdenes</a>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Ventas totales</div>
+        <div class="card-value">
+          {{ totalSales | currency: 'USD':'symbol':'1.2-2' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Órdenes recientes -->
+    <section class="recent-orders">
+      <div class="section-header">
+        <h2>Órdenes recientes</h2>
+        <a routerLink="/admin/orders" class="link-all">Ver todas</a>
+      </div>
+
+      <div *ngIf="recentOrders.length === 0" class="info-text">
+        No hay órdenes registradas todavía.
+      </div>
+
+      <div *ngIf="recentOrders.length > 0" class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of recentOrders">
+              <td>
+                {{ order.createdAt | date: 'short' }}
+              </td>
+              <td>
+                {{ order.user?.name || 'N/D' }}
+              </td>
+              <td>
+                {{ order.totalAmount | currency: 'USD':'symbol':'1.2-2' }}
+              </td>
+              <td>
+                <span class="badge" [class]="order.status.toLowerCase()">
+                  {{ getStatusLabel(order.status) }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="product-list-page">
+  <h1>Productos</h1>
+
+  <!-- Buscador -->
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar por nombre..." />
+    <button (click)="onSearch()">Buscar</button>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando productos...</div>
+
+  <div *ngIf="errorMessage" class="error-text">
+    {{ errorMessage }}
+  </div>
+
+  <div class="products-grid" *ngIf="!loading && !errorMessage">
+    <div *ngIf="products.length === 0" class="info-text">No se encontraron productos.</div>
+
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-card-inner">
+        <!-- Frente -->
+        <div class="product-card-front">
+          <img [src]="getProductImage(product)" [alt]="product.name" />
+          <div class="front-body">
+            <h3>{{ product.name }}</h3>
+            <p class="price">
+              {{ product.price | currency : 'USD' : 'symbol' : '1.2-2' }}
+            </p>
+            <p class="category">
+              {{ getCategoryName(product) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Reverso -->
+        <div class="product-card-back">
+          <div class="back-header">
+            <h3>{{ product.name }}</h3>
+            <p class="price">
+              {{ product.price | currency : 'USD' : 'symbol' : '1.2-2' }}
+            </p>
+          </div>
+
+          <p class="description">
+            {{ product.description || 'Sin descripción' }}
+          </p>
+
+          <div class="back-footer">
+            <span class="stock"> Stock: {{ product.stock > 0 ? product.stock : 'Agotado' }} </span>
+            <a [routerLink]="['/products', product._id]" class="btn-outline"> Ver detalle </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

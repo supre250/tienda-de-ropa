@@ -1,0 +1,84 @@
+<!-- ADMIN - Lista de productos -->
+
+<div class="admin-products-page">
+  <div class="header">
+    <div>
+      <h1>Productos</h1>
+      <p>Gestiona los productos de la tienda XI-XI.</p>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="createProduct()">
+      + Nuevo producto
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando productos...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div *ngIf="products.length === 0" class="info-text">
+      No hay productos registrados.
+    </div>
+
+    <div class="table-wrapper" *ngIf="products.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Activo</th>
+            <th style="width: 140px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>
+              <div class="product-name">
+                {{ product.name }}
+              </div>
+            </td>
+            <td>
+              {{ getCategoryName(product) || '—' }}
+            </td>
+            <td>
+              {{ product.price | currency: 'USD':'symbol':'1.2-2' }}
+            </td>
+            <td>
+              {{ product.stock }}
+            </td>
+            <td>
+              <span
+                class="badge"
+                [class.active]="product.isActive"
+                [class.inactive]="!product.isActive"
+              >
+                {{ product.isActive ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="btn-small"
+                  (click)="editProduct(product)"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  class="btn-small danger"
+                  (click)="deleteProduct(product)"
+                  [disabled]="deleting[product._id]"
+                >
+                  {{ deleting[product._id] ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="checkout-page">
+  <h1>Checkout</h1>
+
+  <div *ngIf="loadingCart" class="info-text">Cargando carrito...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-text">{{ successMessage }}</div>
+
+  <div *ngIf="!loadingCart && cart && cart.items.length > 0" class="checkout-layout">
+    <!-- Formulario -->
+    <div class="checkout-form">
+      <h2>Datos de envío</h2>
+
+      <div class="form-group">
+        <label for="shippingAddress">Dirección de envío</label>
+        <textarea
+          id="shippingAddress"
+          [(ngModel)]="shippingAddress"
+          rows="3"
+          placeholder="Calle, número, ciudad, referencia..."
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notas adicionales (opcional)</label>
+        <textarea
+          id="notes"
+          [(ngModel)]="notes"
+          rows="2"
+          placeholder="Instrucciones para la entrega, horario, etc."
+        ></textarea>
+      </div>
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="onSubmit()"
+        [disabled]="submitting || !cart || cart.items.length === 0"
+      >
+        <ng-container *ngIf="!submitting">Confirmar pedido</ng-container>
+        <ng-container *ngIf="submitting">Procesando...</ng-container>
+      </button>
+    </div>
+
+    <!-- Resumen -->
+    <div class="checkout-summary">
+      <h2>Resumen del pedido</h2>
+
+      <div class="summary-items">
+        <div
+          class="summary-item"
+          *ngFor="let item of cart.items"
+        >
+          <div class="summary-name">
+            {{ getItemName(item) }}
+          </div>
+          <div class="summary-meta">
+            x{{ item.quantity }}
+            ·
+            {{ item.price | currency: 'USD':'symbol':'1.2-2' }}
+          </div>
+          <div class="summary-subtotal">
+            {{ (item.price * item.quantity) | currency: 'USD':'symbol':'1.2-2' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>
+          {{ cartTotal | currency: 'USD':'symbol':'1.2-2' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

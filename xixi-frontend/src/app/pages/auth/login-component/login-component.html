@@ -1,0 +1,54 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1 class="title">XI-XI</h1>
+    <h2 class="subtitle">Iniciar sesión</h2>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="tu@correo.com"
+          [class.is-invalid]="emailControl.invalid && emailControl.touched"
+        />
+        <div class="error-text" *ngIf="emailControl.errors && emailControl.touched">
+          <span *ngIf="emailControl.errors['required']"> El correo es obligatorio </span>
+          <span *ngIf="emailControl.errors['email']"> Debes ingresar un correo válido </span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="********"
+          [class.is-invalid]="passwordControl.invalid && passwordControl.touched"
+        />
+        <div class="error-text" *ngIf="passwordControl.errors && passwordControl.touched">
+          <span *ngIf="passwordControl.errors['required']"> La contraseña es obligatoria </span>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        <span *ngIf="!loading">Ingresar</span>
+        <span *ngIf="loading">Ingresando...</span>
+      </button>
+    </form>
+
+    <p class="extra">
+      ¿No tienes cuenta?
+      <a [routerLink]="['/register']">Regístrate aquí</a>
+    </p>
+  </div>
+</div>

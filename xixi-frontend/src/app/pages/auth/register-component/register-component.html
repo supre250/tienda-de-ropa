@@ -1,0 +1,117 @@
+<div class="register-page">
+  <div class="register-card">
+    <h1 class="title">XI-XI</h1>
+    <h2 class="subtitle">Crear cuenta</h2>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre -->
+      <div class="form-group">
+        <label for="name">Nombre completo</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Tu nombre"
+          [class.is-invalid]="nameControl.invalid && nameControl.touched"
+        />
+        <div class="error-text" *ngIf="nameControl.errors && nameControl.touched">
+          <span *ngIf="nameControl.errors['required']">
+            El nombre es obligatorio
+          </span>
+          <span *ngIf="nameControl.errors['minlength']">
+            El nombre debe tener al menos
+            {{ nameControl.errors['minlength'].requiredLength }} caracteres
+          </span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="tu@correo.com"
+          [class.is-invalid]="emailControl.invalid && emailControl.touched"
+        />
+        <div class="error-text" *ngIf="emailControl.errors && emailControl.touched">
+          <span *ngIf="emailControl.errors['required']">
+            El correo es obligatorio
+          </span>
+          <span *ngIf="emailControl.errors['email']">
+            Debes ingresar un correo válido
+          </span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+          [class.is-invalid]="passwordControl.invalid && passwordControl.touched"
+        />
+        <div
+          class="error-text"
+          *ngIf="passwordControl.errors && passwordControl.touched"
+        >
+          <span *ngIf="passwordControl.errors['required']">
+            La contraseña es obligatoria
+          </span>
+          <span *ngIf="passwordControl.errors['minlength']">
+            La contraseña debe tener al menos
+            {{ passwordControl.errors['minlength'].requiredLength }} caracteres
+          </span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Repite la contraseña"
+          [class.is-invalid]="
+            (confirmPasswordControl.invalid && confirmPasswordControl.touched) ||
+            passwordMismatch
+          "
+        />
+        <div
+          class="error-text"
+          *ngIf="
+            (confirmPasswordControl.errors && confirmPasswordControl.touched) ||
+            passwordMismatch
+          "
+        >
+          <span *ngIf="confirmPasswordControl.errors?.['required']">
+            Debes confirmar la contraseña
+          </span>
+          <span *ngIf="passwordMismatch">
+            Las contraseñas no coinciden
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        <span *ngIf="!loading">Crear cuenta</span>
+        <span *ngIf="loading">Creando cuenta...</span>
+      </button>
+    </form>
+
+    <p class="extra">
+      ¿Ya tienes cuenta?
+      <a [routerLink]="['/login']">Inicia sesión aquí</a>
+    </p>
+  </div>
+</div>

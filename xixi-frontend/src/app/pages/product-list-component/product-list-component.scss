@@ -1,0 +1,226 @@
+// LISTA DE PRODUCTOS - con efecto flip
+
+.product-list-page {
+  min-height: 100vh;
+  padding: 2rem 5vw 3rem;
+  background: #f3f4f6;
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+}
+
+/* Barra de búsqueda */
+
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+
+  input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.55rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    font-size: 0.9rem;
+    outline: none;
+    background: #ffffff;
+
+    &:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+  }
+
+  button {
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: #111827;
+    color: #f9fafb;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease;
+
+    &:hover {
+      background: #0b1120;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Mensajes */
+
+.info-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.error-text {
+  font-size: 0.95rem;
+  color: #b91c1c;
+}
+
+/* GRID con tarjetas flip */
+
+.products-grid {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.4rem;
+}
+
+/* Tarjeta flip */
+
+.product-card {
+  perspective: 1100px; // crea la sensación 3D
+}
+
+.product-card-inner {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
+  overflow: hidden;
+  background: #111827;
+}
+
+/* Al pasar el mouse, rotar */
+
+.product-card:hover .product-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Caras */
+
+.product-card-front,
+.product-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Frente de la tarjeta */
+
+.product-card-front {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+
+  img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: #e5e7eb;
+  }
+
+  .front-body {
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+      min-height: 2.3em;
+    }
+
+    .price {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #16a34a;
+    }
+
+    .category {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+  }
+}
+
+/* Reverso de la tarjeta */
+
+.product-card-back {
+  transform: rotateY(180deg);
+  background: #111827;
+  color: #f9fafb;
+  padding: 0.9rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .back-header {
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .price {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #22c55e;
+      margin-bottom: 0.4rem;
+    }
+  }
+
+  .description {
+    font-size: 0.8rem;
+    color: #e5e7eb;
+    line-height: 1.4;
+    max-height: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .back-footer {
+    margin-top: 0.7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+
+    .stock {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid #f9fafb;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #f9fafb;
+      text-decoration: none;
+      transition: background 0.18s ease, color 0.18s ease;
+
+      &:hover {
+        background: #f9fafb;
+        color: #111827;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card-inner {
+    height: 260px;
+  }
+}

@@ -1,0 +1,72 @@
+<nav class="navbar">
+  <div class="navbar-inner">
+    <!-- Logo -->
+    <a routerLink="/" class="logo">
+      <span class="logo-mark">XI</span>
+      <span class="logo-text">XI</span>
+    </a>
+
+    <!-- Links principales -->
+    <div class="nav-links" [class.open]="isMenuOpen">
+      <a routerLink="/" routerLinkActive="active" (click)="isMenuOpen = false">
+        Inicio
+      </a>
+      <a
+        routerLink="/products"
+        routerLinkActive="active"
+        (click)="isMenuOpen = false"
+      >
+        Productos
+      </a>
+      <a
+        routerLink="/category/alguna"
+        (click)="$event.preventDefault()"
+        class="disabled"
+        title="Ejemplo de enlace a categoría. Ajustar luego."
+      >
+        Categorías
+      </a>
+
+      <!-- Link admin solo para ADMIN -->
+      <a
+        *ngIf="isAdmin()"
+        routerLink="/admin"
+        routerLinkActive="active"
+        (click)="isMenuOpen = false"
+      >
+        Admin
+      </a>
+    </div>
+
+    <!-- Lado derecho -->
+    <div class="nav-right">
+      <!-- Carrito -->
+      <a routerLink="/cart" class="cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+
+      <!-- Si hay usuario logueado -->
+      <div class="user" *ngIf="currentUser; else authLinks">
+        <span class="user-name">Hola, {{ currentUser.name }}</span>
+        <button type="button" class="btn-link" (click)="logout()">
+          Cerrar sesión
+        </button>
+      </div>
+
+      <!-- Si NO hay usuario logueado -->
+      <ng-template #authLinks>
+        <div class="auth-links">
+          <a routerLink="/login" routerLinkActive="active">Iniciar sesión</a>
+          <a routerLink="/register" class="btn-primary">Registrarse</a>
+        </div>
+      </ng-template>
+
+      <!-- Botón hamburguesa (mobile) -->
+      <button class="menu-toggle" type="button" (click)="toggleMenu()">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</nav>

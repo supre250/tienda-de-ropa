@@ -1,0 +1,48 @@
+<div class="home-page">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Bienvenido a XI-XI</h1>
+      <p>
+        Tienda de ropa moderna para todos los estilos. Explora nuestras colecciones y
+        renueva tu outfit.
+      </p>
+      <a routerLink="/products" class="btn-primary">Ver todos los productos</a>
+    </div>
+  </section>
+
+  <section class="products-section">
+    <div class="section-header">
+      <h2>Últimos productos</h2>
+      <a routerLink="/products" class="link-all">Ver todos</a>
+    </div>
+
+    <div *ngIf="loading" class="info-text">Cargando productos...</div>
+    <div *ngIf="errorMessage" class="error-text">
+      {{ errorMessage }}
+    </div>
+
+    <div class="products-grid" *ngIf="!loading && !errorMessage">
+      <div *ngIf="products.length === 0" class="info-text">
+        No hay productos disponibles por el momento.
+      </div>
+
+      <div class="product-card" *ngFor="let product of products">
+        <img [src]="getProductImage(product)" [alt]="product.name" />
+
+        <div class="product-body">
+          <h3>{{ product.name }}</h3>
+          <p class="price">
+            {{ product.price | currency: 'USD':'symbol':'1.2-2' }}
+          </p>
+          <p class="description">
+            {{ product.description || 'Sin descripción' }}
+          </p>
+
+          <a [routerLink]="['/products', product._id]" class="btn-outline">
+            Ver detalle
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

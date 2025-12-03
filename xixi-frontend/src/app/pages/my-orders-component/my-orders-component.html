@@ -1,0 +1,69 @@
+<!-- Mis pedidos -->
+
+<div class="my-orders-page">
+  <h1>Mis pedidos</h1>
+
+  <div *ngIf="loading" class="info-text">Cargando tus pedidos...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div *ngIf="orders.length === 0" class="info-text">
+      Aún no tienes pedidos.
+      <a routerLink="/products">Ver productos</a>
+    </div>
+
+    <div class="orders-grid" *ngIf="orders.length > 0">
+      <article
+        class="order-card"
+        *ngFor="let order of orders"
+      >
+        <header class="order-header">
+          <div>
+            <div class="order-id">Pedido #{{ order._id | slice: -6 }}</div>
+            <div class="order-date">
+              {{ order.createdAt | date: 'short' }}
+            </div>
+          </div>
+          <span class="badge" [class]="getStatusClass(order.status)">
+            {{ getStatusLabel(order.status) }}
+          </span>
+        </header>
+
+        <div class="order-body">
+          <div class="items">
+            <div
+              class="item"
+              *ngFor="let item of order.items"
+            >
+              <div class="item-name">
+                {{ item.name || 'Producto' }}
+              </div>
+              <div class="item-meta">
+                x{{ item.quantity }}
+                ·
+                {{ item.price | currency: 'USD':'symbol':'1.2-2' }}
+              </div>
+              <div class="item-subtotal">
+                {{ (item.price * item.quantity) | currency: 'USD':'symbol':'1.2-2' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="order-footer">
+            <div class="address" *ngIf="order.shippingAddress">
+              <span class="label">Enviar a:</span>
+              <span class="value">{{ order.shippingAddress }}</span>
+            </div>
+
+            <div class="total">
+              <span>Total</span>
+              <span>
+                {{ order.totalAmount | currency: 'USD':'symbol':'1.2-2' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

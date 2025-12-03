@@ -1,1 +1,90 @@
-<p>user-form-component works!</p>
+<!-- ADMIN - Formulario de usuario -->
+
+<div class="admin-user-form-page">
+  <div class="header">
+    <h1>
+      {{ isEditMode ? 'Editar usuario' : 'Nuevo usuario' }}
+    </h1>
+
+    <button type="button" class="btn-secondary" (click)="cancel()">
+      Cancelar
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando usuario...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <form
+    class="user-form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    *ngIf="!loading"
+  >
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" formControlName="name" />
+        <div
+          class="error-text"
+          *ngIf="nameControl.invalid && nameControl.touched"
+        >
+          El nombre es obligatorio (mínimo 3 caracteres).
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+        <div
+          class="error-text"
+          *ngIf="emailControl.invalid && emailControl.touched"
+        >
+          Debes ingresar un email válido.
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="!isEditMode">
+        <label>Password</label>
+        <input type="password" formControlName="password" />
+        <div
+          class="error-text"
+          *ngIf="passwordControl.invalid && passwordControl.touched"
+        >
+          El password es obligatorio (mínimo 6 caracteres).
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rol</label>
+        <select formControlName="role">
+          <option value="CUSTOMER">Cliente</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <label>
+          <input type="checkbox" formControlName="isActive" />
+          Activo
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="saving || form.invalid"
+      >
+        {{ saving ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

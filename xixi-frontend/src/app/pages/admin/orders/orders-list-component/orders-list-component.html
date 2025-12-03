@@ -1,0 +1,77 @@
+<!-- ADMIN - Lista de órdenes -->
+
+<div class="admin-orders-page">
+  <div class="header">
+    <div>
+      <h1>Órdenes</h1>
+      <p>Gestiona los pedidos realizados en la tienda XI-XI.</p>
+    </div>
+
+    <div class="filters">
+      <label>
+        Estado:
+        <select [(ngModel)]="filterStatus">
+          <option value="">Todos</option>
+          <option *ngFor="let s of statuses" [value]="s">
+            {{ getStatusLabel(s) }}
+          </option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando órdenes...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div *ngIf="filteredOrders.length === 0" class="info-text">
+      No hay órdenes registradas.
+    </div>
+
+    <div class="table-wrapper" *ngIf="filteredOrders.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Dirección</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders">
+            <td>
+              {{ order.createdAt | date: 'short' }}
+            </td>
+            <td>
+              {{ getUserName(order) }}
+            </td>
+            <td>
+              {{ order.totalAmount | currency: 'USD':'symbol':'1.2-2' }}
+            </td>
+            <td>
+              <div class="status-cell">
+                <span class="badge" [class]="order.status.toLowerCase()">
+                  {{ getStatusLabel(order.status) }}
+                </span>
+                <select
+                  [ngModel]="order.status"
+                  (ngModelChange)="onStatusChange(order, $event)"
+                  [disabled]="updating[order._id]"
+                >
+                  <option *ngFor="let s of statuses" [value]="s">
+                    {{ getStatusLabel(s) }}
+                  </option>
+                </select>
+              </div>
+            </td>
+            <td class="address-cell">
+              {{ order.shippingAddress || '—' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,66 @@
-<p>categories-list-component works!</p>
+<!-- ADMIN - Lista de categorías -->
+
+<div class="admin-categories-page">
+  <div class="header">
+    <div>
+      <h1>Categorías</h1>
+      <p>Gestiona las categorías de productos.</p>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="createCategory()">
+      + Nueva categoría
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando categorías...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div *ngIf="categories.length === 0" class="info-text">
+      No hay categorías registradas.
+    </div>
+
+    <div class="table-wrapper" *ngIf="categories.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th style="width: 140px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories">
+            <td>
+              <span class="cat-name">{{ category.name }}</span>
+            </td>
+            <td>
+              <span class="cat-description">
+                {{ category.description || '—' }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="btn-small"
+                  (click)="editCategory(category)"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  class="btn-small danger"
+                  (click)="deleteCategory(category)"
+                  [disabled]="deleting[category._id]"
+                >
+                  {{ deleting[category._id] ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

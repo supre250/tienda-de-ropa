@@ -49,10 +49,16 @@
       <!-- Si hay usuario logueado -->
       <div class="user" *ngIf="currentUser; else authLinks">
         <span class="user-name">Hola, {{ currentUser.name }}</span>
+
+        <a routerLink="/my-orders" class="btn-link">
+          Mis pedidos
+        </a>
+
         <button type="button" class="btn-link" (click)="logout()">
           Cerrar sesión
         </button>
       </div>
+
 
       <!-- Si NO hay usuario logueado -->
       <ng-template #authLinks>

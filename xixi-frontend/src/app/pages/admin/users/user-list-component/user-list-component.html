@@ -1,1 +1,80 @@
-<p>user-list-component works!</p>
+<!-- ADMIN - Lista de usuarios -->
+
+<div class="admin-users-page">
+  <div class="header">
+    <div>
+      <h1>Usuarios</h1>
+      <p>Gestiona los usuarios registrados en XI-XI.</p>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="createUser()">
+      + Nuevo usuario
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="info-text">Cargando usuarios...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div *ngIf="users.length === 0" class="info-text">
+      No hay usuarios registrados.
+    </div>
+
+    <div class="table-wrapper" *ngIf="users.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Activo</th>
+            <th style="width: 140px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <span class="user-name">{{ user.name }}</span>
+            </td>
+            <td>
+              <span class="user-email">{{ user.email }}</span>
+            </td>
+            <td>
+              <span class="badge role" [class.admin]="user.role === 'ADMIN'">
+                {{ user.role === 'ADMIN' ? 'Admin' : 'Cliente' }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="badge"
+                [class.active]="user.isActive"
+                [class.inactive]="!user.isActive"
+              >
+                {{ user.isActive ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="btn-small"
+                  (click)="editUser(user)"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  class="btn-small danger"
+                  (click)="deleteUser(user)"
+                  [disabled]="deleting[user._id]"
+                >
+                  {{ deleting[user._id] ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

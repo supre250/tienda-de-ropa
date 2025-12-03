@@ -20,6 +20,8 @@ import { CategoriesListComponent } from './pages/admin/categories/categories-lis
 import { CategoriesFormComponent } from './pages/admin/categories/categories-form-component/categories-form-component';
 import { UserListComponent } from './pages/admin/users/user-list-component/user-list-component';
 import { UserFormComponent } from './pages/admin/users/user-form-component/user-form-component';
+import { OrdersListComponent } from './pages/admin/orders/orders-list-component/orders-list-component';
+import { MyOrdersComponent } from './pages/my-orders-component/my-orders-component';
 
 // Guards
 import { AuthGuard } from './guards/auth-guard';
@@ -45,6 +47,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // solo usuarios logueados
   },
 
+  // ORDENES
+  { path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
+
   // ADMIN (protegido)
   {
     path: 'admin',
@@ -61,12 +66,15 @@ export const routes: Routes = [
       // Categorías
       { path: 'categories', component: CategoriesListComponent },
       { path: 'categories/new', component: CategoriesFormComponent },
-      { path: 'categories/:id', component: CategoriesFormComponent }, // editar
+      { path: 'categories/:id/edit', component: CategoriesFormComponent }, // editar
 
       // Usuarios
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
-      { path: 'users/:id', component: UserFormComponent }, // editar
+      { path: 'users/:id/edit', component: UserFormComponent }, // editar
+
+      { path: 'orders', component: OrdersListComponent },
+
     ],
   },
 
